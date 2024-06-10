@@ -1,4 +1,4 @@
-package fr.enhancedplugins.enhancedhomes.utils;
+package com.enhancedplugins.enhancedhomes.utils;
 
 public class AnsiColor {
     public static final String RESET = "\u001B[0m";

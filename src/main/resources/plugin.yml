@@ -1,3 +1,32 @@
 name: EnhancedHomes
-version: 1.0
-main: fr.enhancedplugins.enhancedhomes.EnhancedHomes
+description: A modern and feature-rich homes plugin.
+authors: [Noma, rvHoney]
+website: https://enhancedplugins.com
+version: '1.0'
+api-version: '1.20.6'
+main: com.enhancedplugins.enhancedhomes.EnhancedHomes
+permissions:
+  enhancedhomes.homes:
+    description: Allows players to list all their homes
+    default: true
+  enhancedhomes.homes.other:
+    description: Allows players to list all their homes
+    default: op
+  enhancedhomes.crossworldtp:
+    description: Allows players to teleport between worlds
+    default: op
+  enhancedhomes.warmup.bypass:
+    description: Allows players to bypass the teleportation warmup
+    default: op
+  enhancedhomes.sethome.max.<number>:
+    description: Allows players to set a home at the specified number
+    default: op
+  enhancedhomes.sethome.unlimited:
+    description: Allows players to set an unlimited number of homes
+    default: op
+commands:
+  homes:
+    description: List all your homes
+    usage: /homes [player]
+    permission: enhancedhomes.homes
+    permission-message: You do not have permission to use this command.
