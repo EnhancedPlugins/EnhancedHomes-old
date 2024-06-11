@@ -8,8 +8,8 @@ cross-world-tp: false
 
 # Teleportation warmup (true/false and time in seconds)
 warmup: true
-warmup-time: 5
+warmup-time: 3
 
 # Limit on number of homes (true/false and max number of homes)
-home-limit: false
-max-homes: 10
+homes-limit: true
+max-homes: 5

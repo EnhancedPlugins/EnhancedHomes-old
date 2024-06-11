@@ -32,8 +32,19 @@ public class EnhancedHomes extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+
         this.config = this.getConfig();
+
+        config.addDefault("cross-world-tp", false);
+        config.addDefault("warmup", true);
+        config.addDefault("warmup-time", 3);
+        config.addDefault("homes-limit", true);
+        config.addDefault("max-homes", 5);
+        config.options().copyDefaults(true);
+        saveConfig();
+
         this.homeManager = new HomeManager(this);
+
         File homesDir = new File(getDataFolder(), "homes");
         if (!homesDir.exists()) {
             homesDir.mkdirs();

@@ -1,5 +1,8 @@
 package com.enhancedplugins.enhancedhomes.commands;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.enhancedplugins.enhancedhomes.models.Home;
 import com.enhancedplugins.enhancedhomes.EnhancedHomes;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
@@ -10,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * This class handles the /home command in the EnhancedHomes plugin.
@@ -19,9 +23,11 @@ import org.bukkit.Location;
 public class HomeCommand implements CommandExecutor {
     private final EnhancedHomes plugin;
     private final HomeManager homeManager;
+    private final Map<Player, BukkitTask> teleportTasks = new HashMap<>();
 
     /**
      * Constructor for the HomeCommand class.
+     *
      * @param plugin The instance of the EnhancedHomes plugin.
      */
     public HomeCommand(EnhancedHomes plugin) {
@@ -32,10 +38,11 @@ public class HomeCommand implements CommandExecutor {
     /**
      * This method is called when the /home command is executed.
      * It handles the logic for teleporting the player to their home.
-     * @param sender The CommandSender who executed the command.
+     *
+     * @param sender  The CommandSender who executed the command.
      * @param command The Command that was executed.
-     * @param label The alias of the command that was used.
-     * @param args The arguments that were provided with the command.
+     * @param label   The alias of the command that was used.
+     * @param args    The arguments that were provided with the command.
      * @return true if the command was executed successfully, false otherwise.
      */
     @Override
@@ -76,6 +83,12 @@ public class HomeCommand implements CommandExecutor {
             targetPlayer = senderPlayer;
         }
 
+        // Check if the player is already teleporting to a home
+        if (teleportTasks.containsKey(targetPlayer)) {
+            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "You are already teleporting to a home.");
+            return true;
+        }
+
         // Get the home from the HomeManager
         Home home = homeManager.getHome(targetPlayer, args[args.length - 1]);
         if (home == null) {
@@ -99,14 +112,16 @@ public class HomeCommand implements CommandExecutor {
             int warmupTime = plugin.getConfig().getInt("warmup-time");
             sender.sendMessage(plugin.getPluginPrefix() + ChatColor.AQUA + "Teleporting to home " + ChatColor.LIGHT_PURPLE + home.getName() + ChatColor.AQUA + " in " + ChatColor.LIGHT_PURPLE + warmupTime + ChatColor.AQUA + " seconds. Do not move.");
             Location playerLocation = senderPlayer.getLocation();
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (playerLocation.distanceSquared(senderPlayer.getLocation()) < 1) {
                     targetPlayer.teleport(homeLocation);
                     sender.sendMessage(plugin.getPluginPrefix() + ChatColor.AQUA + "Teleported to home " + ChatColor.LIGHT_PURPLE + home.getName() + ChatColor.AQUA + ".");
                 } else {
                     sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Teleportation cancelled because you moved.");
                 }
+                teleportTasks.remove(targetPlayer); // Remove the task from the HashMap once it's done
             }, warmupTime * 20L);
+            teleportTasks.put(targetPlayer, task);
         } else {
             // Teleport the player immediately if no warmup is required
             targetPlayer.teleport(homeLocation);

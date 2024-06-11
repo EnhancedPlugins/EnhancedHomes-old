@@ -81,7 +81,7 @@ public class HomesCommand implements CommandExecutor {
         }
 
         // Determine the maximum number of homes
-        boolean isHomeLimitEnabled = plugin.getPluginConfig().getBoolean("home-limit");
+        boolean isHomeLimitEnabled = plugin.getPluginConfig().getBoolean("homes-limit");
         int maxHomes = isHomeLimitEnabled ? plugin.getPluginConfig().getInt("max-homes") : 100;
 
         if (sender.hasPermission("enhancedhomes.sethome.unlimited")) {
