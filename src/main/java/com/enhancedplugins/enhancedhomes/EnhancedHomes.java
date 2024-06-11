@@ -1,5 +1,6 @@
 package com.enhancedplugins.enhancedhomes;
 
+import com.enhancedplugins.enhancedhomes.commands.HomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomesCommand;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.utils.AnsiColor;
@@ -39,7 +40,8 @@ public class EnhancedHomes extends JavaPlugin {
         }
 
         // Register commands
-        Objects.requireNonNull(getCommand("homes")).setExecutor(new HomesCommand(this, homeManager));
+        Objects.requireNonNull(getCommand("homes")).setExecutor(new HomesCommand(this));
+        Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand(this));
 
         getLogger().info(PLUGIN_ENABLED);
     }

@@ -23,9 +23,8 @@ public class HomesCommand implements CommandExecutor {
      * Constructor for the HomesCommand class.
      *
      * @param plugin The EnhancedHomes plugin.
-     * @param homeManager The HomeManager instance.
      */
-    public HomesCommand(EnhancedHomes plugin, HomeManager homeManager) {
+    public HomesCommand(EnhancedHomes plugin) {
         this.plugin = plugin;
         this.homeManager = plugin.getHomeManager();
     }
@@ -75,7 +74,7 @@ public class HomesCommand implements CommandExecutor {
 
         // Check if cross-world teleportation is enabled
         boolean isCrossWorldTpEnabled;
-        if (sender.hasPermission("enhancedhomes.crossworldtp")) {
+        if (sender.hasPermission("enhancedhomes.crossworldtp.bypass")) {
             isCrossWorldTpEnabled = true;
         } else {
             isCrossWorldTpEnabled = plugin.getPluginConfig().getBoolean("cross-world-tp");

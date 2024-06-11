@@ -12,7 +12,13 @@ permissions:
   enhancedhomes.homes.other:
     description: Allows players to list all their homes
     default: op
-  enhancedhomes.crossworldtp:
+  enhancedhomes.home:
+    description: Allows players to teleport to their homes
+    default: true
+  enhancedhomes.home.other:
+    description: Allows players to teleport to other players' homes
+    default: op
+  enhancedhomes.crossworldtp.bypass:
     description: Allows players to teleport between worlds
     default: op
   enhancedhomes.warmup.bypass:
@@ -30,3 +36,8 @@ commands:
     usage: /homes [player]
     permission: enhancedhomes.homes
     permission-message: You do not have permission to use this command.
+  home:
+      description: Teleport to your home
+      usage: /home <name>
+      permission: enhancedhomes.home
+      permission-message: You do not have permission to use this command.
