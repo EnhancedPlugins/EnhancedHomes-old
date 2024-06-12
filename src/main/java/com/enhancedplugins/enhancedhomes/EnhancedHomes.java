@@ -2,6 +2,7 @@ package com.enhancedplugins.enhancedhomes;
 
 import com.enhancedplugins.enhancedhomes.commands.HomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomesCommand;
+import com.enhancedplugins.enhancedhomes.commands.DelHomeCommand;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.utils.AnsiColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -53,6 +54,7 @@ public class EnhancedHomes extends JavaPlugin {
         // Register commands
         Objects.requireNonNull(getCommand("homes")).setExecutor(new HomesCommand(this));
         Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand(this));
+        Objects.requireNonNull(getCommand("delhome")).setExecutor(new DelHomeCommand(this));
 
         getLogger().info(PLUGIN_ENABLED);
     }
