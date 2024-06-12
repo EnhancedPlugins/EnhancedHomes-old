@@ -33,6 +33,12 @@ permissions:
   enhancedhomes.sethome.unlimited:
     description: Allows players to set an unlimited number of homes
     default: op
+  enhancedhomes.delhome:
+    description: Allows player to delete one of his home.
+    default: op
+  enhancedhomes.delhome.other:
+    description : Allows players to delete an other player's home.
+    default : op
 commands:
   homes:
     description: List all your homes
@@ -48,4 +54,9 @@ commands:
     description: Set a home
     usage: /sethome <name>
     permission: enhancedhomes.sethome
+    permission-message: You do not have permission to use this command.
+  delhome:
+    description : Delete a house
+    usage: /delhome [name]
+    permission: enhancedhomes.delhome
     permission-message: You do not have permission to use this command.
