@@ -24,6 +24,9 @@ permissions:
   enhancedhomes.warmup.bypass:
     description: Allows players to bypass the teleportation warmup
     default: op
+  enhancedhomes.sethome:
+    description: Allows players to set a home
+    default: true
   enhancedhomes.sethome.max.<number>:
     description: Allows players to set a home at the specified number
     default: op
@@ -41,3 +44,8 @@ commands:
       usage: /home <name>
       permission: enhancedhomes.home
       permission-message: You do not have permission to use this command.
+  sethome:
+    description: Set a home
+    usage: /sethome <name>
+    permission: enhancedhomes.sethome
+    permission-message: You do not have permission to use this command.

@@ -2,14 +2,18 @@ package com.enhancedplugins.enhancedhomes;
 
 import com.enhancedplugins.enhancedhomes.commands.HomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomesCommand;
+import com.enhancedplugins.enhancedhomes.commands.SetHomeCommand;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.utils.AnsiColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * The EnhancedHomes class is the main class of the EnhancedHomes plugin.
@@ -24,6 +28,7 @@ public class EnhancedHomes extends JavaPlugin {
     private static final String PLUGIN_PREFIX = ChatColor.AQUA + "[" + ChatColor.WHITE + PLUGIN_NAME + ChatColor.AQUA + "] " + ChatColor.RESET;
     private FileConfiguration config;
     private HomeManager homeManager;
+    private final Set<Inventory> protectedInventories = new HashSet<>();
 
     /**
      * This method is called when the plugin is enabled.
@@ -53,6 +58,7 @@ public class EnhancedHomes extends JavaPlugin {
         // Register commands
         Objects.requireNonNull(getCommand("homes")).setExecutor(new HomesCommand(this));
         Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand(this));
+        Objects.requireNonNull(getCommand("sethome")).setExecutor(new SetHomeCommand(this));
 
         getLogger().info(PLUGIN_ENABLED);
     }
@@ -91,4 +97,13 @@ public class EnhancedHomes extends JavaPlugin {
      * @return The home manager.
      */
     public HomeManager getHomeManager() { return this.homeManager; }
+
+    /**
+     * Retrieves the set of protected inventories.
+     *
+     * @return The set of protected inventories.
+     */
+    public Set<Inventory> getProtectedInventories() {
+        return protectedInventories;
+    }
 }
