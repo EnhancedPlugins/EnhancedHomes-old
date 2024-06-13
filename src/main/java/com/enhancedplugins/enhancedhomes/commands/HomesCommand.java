@@ -42,9 +42,23 @@ public class HomesCommand implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        String pluginPrefix;
+        if (plugin.getPluginConfig().getBoolean("show-prefix")) {
+            pluginPrefix = plugin.getLangMessage("prefix") + ChatColor.RESET + " ";
+        } else {
+            pluginPrefix = "";
+        }
+
         // Check if the sender is a player
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Only players can use this command.");
+            String playerOnlyMessage = plugin.getLangMessage("commands.player-only");
+            sender.sendMessage(pluginPrefix + playerOnlyMessage);
+            return true;
+        }
+
+        if (args.length > 1) {
+            String usageMessage = plugin.getLangMessage("commands.homes.usage");
+            sender.sendMessage(pluginPrefix + usageMessage);
             return true;
         }
 
@@ -55,12 +69,15 @@ public class HomesCommand implements CommandExecutor {
         } else {
             // Check if the sender has the necessary permissions
             if (!sender.getName().equalsIgnoreCase(args[0]) && !sender.hasPermission("enhancedhomes.homes.other")) {
-                sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "You do not have permission to view other players' homes.");
+                String noPermissionMessage = plugin.getLangMessage("commands.no-permission");
+                sender.sendMessage(pluginPrefix + noPermissionMessage);
                 return true;
             }
             targetPlayer = plugin.getServer().getPlayer(args[0]);
             if (targetPlayer == null) {
-                sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Player not found.");
+                String playerNotFoundMessage = plugin.getLangMessage("commands.player-not-found");
+                String formattedMessage = playerNotFoundMessage.replace("%player%", args[0]);
+                sender.sendMessage(pluginPrefix + formattedMessage);
                 return true;
             }
         }
@@ -68,7 +85,9 @@ public class HomesCommand implements CommandExecutor {
         // Retrieve the homes of the target player
         List<Home> homes = homeManager.getHomes(targetPlayer);
         if (homes.isEmpty()) {
-            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "No homes found for " + targetPlayer.getName());
+            String noHomesFoundMessage = plugin.getLangMessage("commands.homes.homes-not-found");
+            String formattedMessage = noHomesFoundMessage.replace("%player%", targetPlayer.getName());
+            sender.sendMessage(pluginPrefix + formattedMessage);
             return true;
         }
 
@@ -96,12 +115,25 @@ public class HomesCommand implements CommandExecutor {
         }
 
         // Send a message to the sender with the list of homes
-        sender.sendMessage(plugin.getPluginPrefix() + ChatColor.LIGHT_PURPLE + targetPlayer.getName() + ChatColor.AQUA + "'s homes (" + ChatColor.LIGHT_PURPLE + homeManager.getHomes(targetPlayer).size() + ChatColor.AQUA + "/" + ChatColor.LIGHT_PURPLE + maxHomes + ChatColor.AQUA + "):");
+        String homesListTitle = plugin.getLangMessage("commands.homes.list-title");
+        String formattedTitle;
+        formattedTitle = homesListTitle.replace("%player%", targetPlayer.getName());
+        formattedTitle = formattedTitle.replace("%current%", String.valueOf(homes.size()));
+        formattedTitle = formattedTitle.replace("%max%", String.valueOf(maxHomes));
+        sender.sendMessage(pluginPrefix + formattedTitle);
+
         homes.forEach(home -> {
             String worldName = home.getWorldName();
             String homeName = home.getName();
-            String homeWorldColor = String.valueOf(isCrossWorldTpEnabled ? ChatColor.GREEN : worldName.equals(targetPlayer.getWorld().getName()) ? ChatColor.GREEN : ChatColor.RED);
-            sender.sendMessage(ChatColor.AQUA + "- " + ChatColor.LIGHT_PURPLE + homeName + ChatColor.AQUA + " (" + homeWorldColor + worldName + ChatColor.AQUA + ")");
+            String homesListItem = plugin.getLangMessage("commands.homes.list-item");
+            String formattedItem = homesListItem.replace("%home%", homeName);
+            formattedItem = formattedItem.replace("%world%", worldName);
+            if (isCrossWorldTpEnabled) {
+                formattedItem = formattedItem.replace("%world-color%", plugin.getLangMessage("commands.homes.accessible-world"));
+            } else {
+                formattedItem = formattedItem.replace("%world-color%", worldName.equalsIgnoreCase(((Player) sender).getWorld().getName()) ? plugin.getLangMessage("commands.homes.accessible-world") : plugin.getLangMessage("commands.homes.inaccessible-world"));
+            }
+            sender.sendMessage(formattedItem);
         });
 
         return true;

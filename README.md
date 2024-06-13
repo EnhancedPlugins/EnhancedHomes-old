@@ -66,3 +66,5 @@ Arguments between `<>` are required, and arguments between `[]` are optional. `|
 # Support
 
 If you need help with the plugin, have a suggestion, or found a bug, do not hesitate to contact us on Discord: @rvhoney, @nohmah.
+
+git tag -a v1.0.0 -m "Initial release"

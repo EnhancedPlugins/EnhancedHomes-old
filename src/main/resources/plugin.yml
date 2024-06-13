@@ -44,19 +44,15 @@ commands:
     description: List all your homes
     usage: /homes [player]
     permission: enhancedhomes.homes
-    permission-message: You do not have permission to use this command.
   home:
       description: Teleport to your home
       usage: /home <name>
       permission: enhancedhomes.home
-      permission-message: You do not have permission to use this command.
   sethome:
     description: Set a home
     usage: /sethome <name>
     permission: enhancedhomes.sethome
-    permission-message: You do not have permission to use this command.
   delhome:
     description : Delete a home
     usage: /delhome [name]
     permission: enhancedhomes.delhome
-    permission-message: You do not have permission to use this command.

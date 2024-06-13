@@ -7,6 +7,7 @@ import com.enhancedplugins.enhancedhomes.commands.SetHomeCommand;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.utils.AnsiColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
@@ -25,6 +26,7 @@ public class EnhancedHomes extends JavaPlugin {
     private static final String PLUGIN_ERROR_PREFIX = ChatColor.RED + "[" + ChatColor.WHITE + PLUGIN_NAME + ChatColor.RED + "] " + ChatColor.RESET;
     private static final String PLUGIN_PREFIX = ChatColor.AQUA + "[" + ChatColor.WHITE + PLUGIN_NAME + ChatColor.AQUA + "] " + ChatColor.RESET;
     private FileConfiguration config;
+    private FileConfiguration langConfig;
     private HomeManager homeManager;
 
     /**
@@ -34,9 +36,12 @@ public class EnhancedHomes extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        loadLangConfig();
+
 
         this.config = this.getConfig();
 
+        config.addDefault("show-prefix", true);
         config.addDefault("cross-world-tp", false);
         config.addDefault("warmup", true);
         config.addDefault("warmup-time", 3);
@@ -95,4 +100,38 @@ public class EnhancedHomes extends JavaPlugin {
      * @return The home manager.
      */
     public HomeManager getHomeManager() { return this.homeManager; }
+
+    /**
+     * Loads the language configuration file.
+     */
+    public void loadLangConfig() {
+        File langFile = new File(getDataFolder(), "lang.yml");
+        if (!langFile.exists()) {
+            saveResource("lang.yml", false);
+        }
+
+        this.langConfig = YamlConfiguration.loadConfiguration(langFile);
+    }
+
+    /**
+     * Retrieves a language message from the language configuration file.
+     * The message is retrieved based on the specified path.
+     * The message is then translated to include color codes.
+     *
+     * @param path The path to the message in the language configuration file.
+     * @return The translated message.
+     */
+    public String getLangMessage(String path) {
+        String message = this.langConfig.getString(path);
+        if (message == null) {
+            // Option 1: Return a default message
+            return "Message not found for path: " + path;
+
+            // Option 2: Throw an exception
+            // throw new IllegalArgumentException("Message not found for path: " + path);
+        }
+        String translatedMessage = ChatColor.translateAlternateColorCodes('&', message);
+        return translatedMessage;
+    }
+
 }

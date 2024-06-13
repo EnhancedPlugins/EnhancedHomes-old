@@ -1,0 +1,34 @@
+prefix: "&b[&fEnhancedHomes&b]"
+commands:
+  no-permission: "&cYou do not have permission to use this command."
+  player-only: "&cOnly players can use this command."
+  player-not-found: "&cPlayer %player% not found." # %player%: player name
+  reload: "&bPlugin reloaded."
+  homes:
+    usage: "&cInvalid usage. Correct usage: /homes [player]"
+    homes-not-found: "&cNo homes found for %player%." # %player%: player name
+    list-title: "&b&d%player%&b's homes (&d%current%&b/&d%max%&b):" # %player%: player name, %current%: current number of homes, %max%: maximum number of homes
+    list-item: "&b- %home% (%world-color%%world%&b)" # %home%: home name, %world-color%: world color (accessible/inaccessible), %world%: world name
+    other-error: "&cYou do not have permission to view other players' homes."
+    accessible-world: "&a"
+    inaccessible-world: "&c"
+  home:
+    usage: "&cInvalid usage. Correct usage: /home <name> || /home [player] <name>"
+    home-not-found: "&cNo home found with the name %home% for %player%." # %home%: home name, %player%: player name
+    teleported-message: "&bTeleported to &d%home%&b." # %home%: home name, %player%: player name; %world%: world name
+    warmup-message: "&bTeleporting to &d%home%&b in &d%time%&b seconds..." # %home%: home name, %time%: warmup time, %player%: player name
+    movement-cancelled: "&cTeleportation cancelled because you moved."
+    already-teleporting: "&cYou are already teleporting to a home."
+    cross-world-error: "&cYou do not have permission to teleport between worlds."
+    other-error: "&cYou do not have permission to teleport to other players' homes."
+    world-not-found: "&cThe world %world% does not exist." # %world%: world name
+  sethome:
+    usage: "&cInvalid usage. Correct usage: /sethome <name>"
+    home-set: "&bHome &d%home%&b set." # %home%: home name
+    home-limit-reached: "&cCannot create home %home%. You have reached the maximum number of homes (%current%/%max%)." # %home%: home name, %current%: current number of homes, %max%: maximum number of homes
+    home-exists: "&eA home with the name &d%home%&e already exists. Please use /sethome &d%home%&e again to replace it (within 5 minutes)." # %home%: home name
+  delhome:
+    usage: "&cInvalid usage. Correct usage: /delhome [name] || /delhome [player] [name]"
+    home-deleted: "&bHome &d%home%&b deleted." # %home%: home name, %player%: player name
+    home-not-found: "&cNo home found with the name &d%home%&c for %player%." # %home%: home name, %player%: player name
+    other-error: "&cYou do not have permission to delete other players' homes."

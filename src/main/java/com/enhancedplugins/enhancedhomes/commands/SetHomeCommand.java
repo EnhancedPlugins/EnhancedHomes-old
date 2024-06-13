@@ -44,20 +44,24 @@ public class SetHomeCommand implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        String pluginPrefix;
+        if (plugin.getPluginConfig().getBoolean("show-prefix")) {
+            pluginPrefix = plugin.getLangMessage("prefix") + ChatColor.RESET + " ";
+        } else {
+            pluginPrefix = "";
+        }
+
         // Check if the sender is a player
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Only players can use this command.");
+            String playerOnlyMessage = plugin.getLangMessage("commands.player-only");
+            sender.sendMessage(pluginPrefix + playerOnlyMessage);
             return true;
         }
 
         // Check if the correct number of arguments was given
-        if (args.length == 0) {
-            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Not enough arguments. Usage: /sethome [name] || <player> [name].");
-            return true;
-        }
-
-        if (args.length > 1) {
-            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Too many arguments. Usage: /sethome <name>");
+        if (args.length != 1) {
+            String usageMessage = plugin.getLangMessage("commands.sethome.usage");
+            sender.sendMessage(pluginPrefix + usageMessage);
             return true;
         }
 
@@ -68,7 +72,9 @@ public class SetHomeCommand implements CommandExecutor {
         // Check if the home already exists
         if (home != null && !isHomeInReplaceHome) {
             replaceHome.put(player, args[0]);
-            sender.sendMessage(plugin.getPluginPrefix() + ChatColor.YELLOW + "A home with the name " + ChatColor.LIGHT_PURPLE + args[0] + ChatColor.YELLOW + " already exists. Please use /sethome " + args[0] + " again to replace it (within 5 minutes).");
+            String homeExistsMessage = plugin.getLangMessage("commands.sethome.home-exists");
+            homeExistsMessage = homeExistsMessage.replace("%home%", args[0]);
+            sender.sendMessage(pluginPrefix + homeExistsMessage);
 
             // Remove the home from the replaceHome map after 5 minutes
             new BukkitRunnable() {
@@ -104,7 +110,11 @@ public class SetHomeCommand implements CommandExecutor {
         }
 
         if (homeManager.getHomes(player).size() >= maxHomes) {
-            sender.sendMessage(plugin.getPluginErrorPrefix() + ChatColor.RED + "Home limit reached. You can only set " + maxHomes + " homes.");
+            String homeLimitReachedMessage = plugin.getLangMessage("commands.sethome.home-limit-reached");
+            homeLimitReachedMessage = homeLimitReachedMessage.replace("%homes%", String.valueOf(homeManager.getHomes(player).size()));
+            homeLimitReachedMessage = homeLimitReachedMessage.replace("%current%", String.valueOf(maxHomes));
+            homeLimitReachedMessage = homeLimitReachedMessage.replace("%max%", String.valueOf(maxHomes));
+            sender.sendMessage(pluginPrefix + homeLimitReachedMessage);
             return true;
         }
 
@@ -117,7 +127,9 @@ public class SetHomeCommand implements CommandExecutor {
         home = new Home(args[0], worldName, targetX, targetY, targetZ);
         homeManager.addHome(targetPlayer, home);
 
-        sender.sendMessage(plugin.getPluginPrefix() + ChatColor.AQUA + "Home " + ChatColor.LIGHT_PURPLE + args[0] + ChatColor.AQUA + " set.");
+        String homeSetMessage = plugin.getLangMessage("commands.sethome.home-set");
+        homeSetMessage = homeSetMessage.replace("%home%", args[0]);
+        sender.sendMessage(pluginPrefix + homeSetMessage);
         return true;
     }
 }

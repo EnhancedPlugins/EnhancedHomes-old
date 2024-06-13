@@ -3,6 +3,9 @@
 # If you have any questions or suggestions, feel free to contact us on SpigotMC or Discord.
 # Permissions are prioritized over the default configuration.
 
+# Plugin prefix
+show-prefix: true
+
 # Cross-world teleportation (true/false)
 cross-world-tp: false
 
