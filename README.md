@@ -13,7 +13,7 @@ This plugin allows players to set homes with a name and teleport to them, delete
 Players can set homes in different worlds and teleport to them without any issues.
 - [X] **Configurable homes limit, cross-world teleportation, and more.**  
 Plugin can be fully customized to your liking with the configuration file but also with the permissions.
-- [X] **Configurable messages.**
+- [X] **Configurable messages.**  
 All messages can be customized in the configuration file and prefix can be changed or removed.
 - [X] **Lightweight and easy to use.**  
 EnhancedHomes is a very lightweight plugin that is easy to use and doesn't require any setup.
