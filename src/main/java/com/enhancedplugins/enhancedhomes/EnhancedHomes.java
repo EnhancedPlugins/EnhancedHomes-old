@@ -4,6 +4,7 @@ import com.enhancedplugins.enhancedhomes.commands.DelHomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomesCommand;
 import com.enhancedplugins.enhancedhomes.commands.SetHomeCommand;
+import com.enhancedplugins.enhancedhomes.commands.EnhancedHomesReloadCommand;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.utils.AnsiColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,7 @@ public class EnhancedHomes extends JavaPlugin {
     private FileConfiguration config;
     private FileConfiguration langConfig;
     private HomeManager homeManager;
+    private File langFile;
 
     /**
      * This method is called when the plugin is enabled.
@@ -37,7 +39,6 @@ public class EnhancedHomes extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         loadLangConfig();
-
 
         this.config = this.getConfig();
 
@@ -57,11 +58,18 @@ public class EnhancedHomes extends JavaPlugin {
             homesDir.mkdirs();
         }
 
+        this.langFile = new File(getDataFolder(), "lang.yml");
+        if (!langFile.exists()) {
+            saveResource("lang.yml", false);
+        }
+        this.langConfig = YamlConfiguration.loadConfiguration(langFile);
+
         // Register commands
         Objects.requireNonNull(getCommand("homes")).setExecutor(new HomesCommand(this));
         Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand(this));
         Objects.requireNonNull(getCommand("sethome")).setExecutor(new SetHomeCommand(this));
         Objects.requireNonNull(getCommand("delhome")).setExecutor(new DelHomeCommand(this));
+        Objects.requireNonNull(getCommand("enhancedhomesreload")).setExecutor(new EnhancedHomesReloadCommand(this));
 
         getLogger().info(PLUGIN_ENABLED);
     }
@@ -74,25 +82,20 @@ public class EnhancedHomes extends JavaPlugin {
     public void onDisable() { getLogger().info(PLUGIN_DISABLED); }
 
     /**
-     * Retrieves the plugin prefix.
-     *
-     * @return The plugin prefix.
-     */
-    public String getPluginPrefix() { return PLUGIN_PREFIX; }
-
-    /**
-     * Retrieves the plugin error prefix.
-     *
-     * @return The plugin error prefix.
-     */
-    public String getPluginErrorPrefix() { return PLUGIN_ERROR_PREFIX; }
-
-    /**
      * Retrieves the plugin configuration.
      *
      * @return The plugin configuration.
      */
     public FileConfiguration getPluginConfig() { return this.config; }
+
+    /**
+     * Reloads the plugin configuration.
+     */
+    public void reloadPluginConfig() {
+        reloadConfig();
+        this.config = getConfig();
+        saveDefaultConfig();
+    }
 
     /**
      * Retrieves the home manager.
@@ -124,14 +127,20 @@ public class EnhancedHomes extends JavaPlugin {
     public String getLangMessage(String path) {
         String message = this.langConfig.getString(path);
         if (message == null) {
-            // Option 1: Return a default message
             return "Message not found for path: " + path;
-
-            // Option 2: Throw an exception
-            // throw new IllegalArgumentException("Message not found for path: " + path);
         }
         String translatedMessage = ChatColor.translateAlternateColorCodes('&', message);
         return translatedMessage;
     }
 
+    /**
+     * Reloads the language configuration file.
+     */
+    public void reloadLangFile() {
+        this.langConfig = YamlConfiguration.loadConfiguration(langFile);
+        if (!this.langFile.exists()) {
+            saveResource("lang.yml", false);
+            this.langConfig = YamlConfiguration.loadConfiguration(langFile);
+        }
+    }
 }

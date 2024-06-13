@@ -6,6 +6,9 @@
 # Plugin prefix
 show-prefix: true
 
+# Teleportation sound (true/false)
+teleport-sound: true
+
 # Cross-world teleportation (true/false)
 cross-world-tp: false
 
@@ -13,6 +16,6 @@ cross-world-tp: false
 warmup: true
 warmup-time: 3
 
-# Limit on number of homes (true/false and max number of homes)
+# Limit on number of homes (true/false and max number of homes) - Max is 100
 homes-limit: true
 max-homes: 5

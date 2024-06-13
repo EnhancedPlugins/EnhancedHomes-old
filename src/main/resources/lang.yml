@@ -3,7 +3,7 @@ commands:
   no-permission: "&cYou do not have permission to use this command."
   player-only: "&cOnly players can use this command."
   player-not-found: "&cPlayer %player% not found." # %player%: player name
-  reload: "&bPlugin reloaded."
+  reload: "&bConfiguration, language file and homes reloaded successfully."
   homes:
     usage: "&cInvalid usage. Correct usage: /homes [player]"
     homes-not-found: "&cNo homes found for %player%." # %player%: player name

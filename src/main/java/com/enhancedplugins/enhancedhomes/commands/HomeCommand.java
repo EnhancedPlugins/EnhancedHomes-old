@@ -140,7 +140,8 @@ public class HomeCommand implements CommandExecutor {
                     targetPlayer.teleport(homeLocation);
 
                     // Play a sound effect when teleporting
-                    targetPlayer.playSound(targetPlayer.getLocation(), "entity.enderman.teleport", 1.0f, 1.0f);
+                    if (plugin.getConfig().getBoolean("teleport-sound"))
+                        targetPlayer.playSound(targetPlayer.getLocation(), "entity.enderman.teleport", 1.0f, 1.0f);
 
                     String teleportMessage = plugin.getLangMessage("commands.home.teleported-message");
                     teleportMessage = teleportMessage.replace("%home%", home.getName());
@@ -159,7 +160,8 @@ public class HomeCommand implements CommandExecutor {
             targetPlayer.teleport(homeLocation);
 
             // Play a sound effect when teleporting
-            targetPlayer.playSound(targetPlayer.getLocation(), "entity.enderman.teleport", 1.0f, 1.0f);
+            if (plugin.getConfig().getBoolean("teleport-sound"))
+                targetPlayer.playSound(targetPlayer.getLocation(), "entity.enderman.teleport", 1.0f, 1.0f);
 
             // Send a message to the sender
             String teleportMessage = plugin.getLangMessage("commands.home.teleported-message");
