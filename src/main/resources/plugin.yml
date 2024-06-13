@@ -56,7 +56,7 @@ commands:
     permission: enhancedhomes.sethome
     permission-message: You do not have permission to use this command.
   delhome:
-    description : Delete a house
+    description : Delete a home
     usage: /delhome [name]
     permission: enhancedhomes.delhome
     permission-message: You do not have permission to use this command.
