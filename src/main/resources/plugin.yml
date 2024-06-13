@@ -39,6 +39,9 @@ permissions:
   enhancedhomes.delhome.other:
     description : Allows players to delete an other player's home.
     default : op
+  enhancedhomes.enhancedhomesreload:
+    description: Allows players to reload the plugin
+    default: op
 commands:
   homes:
     description: List all your homes
@@ -59,4 +62,9 @@ commands:
     description : Delete a home
     usage: /delhome [name]
     permission: enhancedhomes.delhome
+    permission-message: You do not have permission to use this command.
+  enhancedhomesreload:
+    description: Reload the plugin
+    usage: /enhancedhomesreload
+    permission: enhancedhomes.enhancedhomesreload
     permission-message: You do not have permission to use this command.

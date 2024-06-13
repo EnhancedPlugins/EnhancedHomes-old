@@ -139,4 +139,9 @@ public class HomeManager {
             plugin.getLogger().severe("Could not save homes for player " + player.getName());
         }
     }
+
+    public void reloadHomes() {
+        homesMap.clear();
+        loadHomes();
+    }
 }

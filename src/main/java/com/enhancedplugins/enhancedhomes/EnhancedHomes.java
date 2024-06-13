@@ -4,9 +4,11 @@ import com.enhancedplugins.enhancedhomes.commands.DelHomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomeCommand;
 import com.enhancedplugins.enhancedhomes.commands.HomesCommand;
 import com.enhancedplugins.enhancedhomes.commands.SetHomeCommand;
+import com.enhancedplugins.enhancedhomes.commands.EnhancedHomesReloadCommand;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.utils.AnsiColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
@@ -26,6 +28,8 @@ public class EnhancedHomes extends JavaPlugin {
     private static final String PLUGIN_PREFIX = ChatColor.AQUA + "[" + ChatColor.WHITE + PLUGIN_NAME + ChatColor.AQUA + "] " + ChatColor.RESET;
     private FileConfiguration config;
     private HomeManager homeManager;
+    private File langFile;
+    private YamlConfiguration langConfig;
 
     /**
      * This method is called when the plugin is enabled.
@@ -52,11 +56,18 @@ public class EnhancedHomes extends JavaPlugin {
             homesDir.mkdirs();
         }
 
+        this.langFile = new File(getDataFolder(), "lang.yml");
+        if (!langFile.exists()) {
+            saveResource("lang.yml", false);
+        }
+        this.langConfig = YamlConfiguration.loadConfiguration(langFile);
+
         // Register commands
         Objects.requireNonNull(getCommand("homes")).setExecutor(new HomesCommand(this));
         Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand(this));
         Objects.requireNonNull(getCommand("sethome")).setExecutor(new SetHomeCommand(this));
         Objects.requireNonNull(getCommand("delhome")).setExecutor(new DelHomeCommand(this));
+        Objects.requireNonNull(getCommand("enhancedhomesreload")).setExecutor(new EnhancedHomesReloadCommand(this));
 
         getLogger().info(PLUGIN_ENABLED);
     }
@@ -89,10 +100,20 @@ public class EnhancedHomes extends JavaPlugin {
      */
     public FileConfiguration getPluginConfig() { return this.config; }
 
+    public void reloadPluginConfig() {
+        reloadConfig();
+        this.config = getConfig();
+    }
+
     /**
      * Retrieves the home manager.
      *
      * @return The home manager.
      */
     public HomeManager getHomeManager() { return this.homeManager; }
+
+    public void reloadLangFile() {
+        this.langConfig = YamlConfiguration.loadConfiguration(langFile);
+    }
 }
+
