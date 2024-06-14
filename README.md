@@ -1,5 +1,5 @@
 **Native Minecraft Version:** 1.21  
-**Tested Minecraft Version:** 1.17, 1.18, 1.19, 1.20, 1.20.6
+**Tested Minecraft Version:** 1.17, 1.18, 1.19, 1.20, 1.20.6  
 **Languages Supported:** English (French coming soon)  
 
 ![EnhancedHomes](https://media.discordapp.net/attachments/1250630591154749491/1250630845132308543/enhancedhomes.jpg?ex=666ba43d&is=666a52bd&hm=19fad3b06d0f0805fb389a3e66219c17625b45ffc6e3478731b8e00be75dd9bb&=&format=webp)
