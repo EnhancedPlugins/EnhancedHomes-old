@@ -2,8 +2,8 @@ name: EnhancedHomes
 description: A modern and feature-rich homes plugin.
 authors: [Noma, rvHoney]
 website: https://enhancedplugins.com
-version: '1.1'
-api-version: '1.20.6'
+version: '1.2'
+api-version: '1.17'
 main: com.enhancedplugins.enhancedhomes.EnhancedHomes
 permissions:
   enhancedhomes.homes:
@@ -35,7 +35,7 @@ permissions:
     default: op
   enhancedhomes.delhome:
     description: Allows player to delete one of his home.
-    default: op
+    default: true
   enhancedhomes.delhome.other:
     description : Allows players to delete an other player's home.
     default : op

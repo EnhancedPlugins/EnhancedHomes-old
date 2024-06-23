@@ -11,6 +11,8 @@ EnhancedHomes is a simple plugin that allows players to set homes with a name an
 This plugin allows players to set homes with a name and teleport to them, delete them, or do the same with other players' homes.
 - [X] **Multi-world support.**  
 Players can set homes in different worlds and teleport to them without any issues.
+- [X] **Cross-platform support (Geyser, Floodgate).**
+This plugin is compatible with Geyser and Floodgate, allowing Bedrock players to use it.
 - [X] **Configurable homes limit, cross-world teleportation, and more.**  
 Plugin can be fully customized to your liking with the configuration file but also with the permissions.
 - [X] **Configurable messages.**  

@@ -36,7 +36,17 @@ public class HomeManager {
      * @return The home, or null if the home does not exist.
      */
     public Home getHome(Player player, String homeName) {
-        return homesMap.get(player.getUniqueId()).stream().filter(home -> home.getName().equals(homeName)).findFirst().orElse(null);
+        UUID playerId = player.getUniqueId();
+        List<Home> playerHomes = homesMap.get(playerId);
+        if (playerHomes == null) {
+            playerHomes = new ArrayList<>();
+            homesMap.put(playerId, playerHomes);
+            saveHomes(player);
+        }
+        return playerHomes.stream()
+                .filter(home -> home.getName().equals(homeName))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -101,12 +111,15 @@ public class HomeManager {
      */
     private void loadHomes() {
         File homesDir = new File(plugin.getDataFolder(), "homes");
-        if (homesDir.exists()) {
-            for (File file : Objects.requireNonNull(homesDir.listFiles())) {
-                UUID playerId = UUID.fromString(file.getName().replace(".yml", ""));
-                YamlConfiguration yamlFile = YamlConfiguration.loadConfiguration(file);
-                List<Home> homes = new ArrayList<>();
-                Objects.requireNonNull(yamlFile.getConfigurationSection("homes")).getKeys(false).forEach(homeName -> {
+        if (!homesDir.exists()) {
+            homesDir.mkdirs();
+        }
+        for (File file : Objects.requireNonNull(homesDir.listFiles())) {
+            UUID playerId = UUID.fromString(file.getName().replace(".yml", ""));
+            YamlConfiguration yamlFile = YamlConfiguration.loadConfiguration(file);
+            List<Home> homes = new ArrayList<>();
+            if(yamlFile.getConfigurationSection("homes") != null) {
+                yamlFile.getConfigurationSection("homes").getKeys(false).forEach(homeName -> {
                     String world = yamlFile.getString("homes." + homeName + ".world");
                     double x = yamlFile.getDouble("homes." + homeName + ".x");
                     double y = yamlFile.getDouble("homes." + homeName + ".y");
