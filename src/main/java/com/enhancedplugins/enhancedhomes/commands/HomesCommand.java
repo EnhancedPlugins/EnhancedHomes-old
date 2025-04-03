@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.List;
 
@@ -106,12 +107,16 @@ public class HomesCommand implements CommandExecutor {
         if (sender.hasPermission("enhancedhomes.sethome.unlimited")) {
             maxHomes = 100;
         } else {
-            for (int i = 1; i <= 100; i++) {
-                if (sender.hasPermission("enhancedhomes.sethome.max." + i)) {
-                    maxHomes = i;
-                    break;
-                }
-            }
+            List<String> sortedPermissions = sender.getEffectivePermissions().stream()
+                    .map(PermissionAttachmentInfo::getPermission)
+                    .filter(perm -> perm.startsWith("enhancedhomes.sethome.max"))
+                    .sorted()
+                    .toList();
+
+            maxHomes = sortedPermissions.stream()
+                    .map(perm -> Integer.parseInt(perm.replace("enhancedhomes.sethome.max.", "")))
+                    .max(Integer::compareTo)
+                    .orElse(maxHomes);
         }
 
         // Send a message to the sender with the list of homes

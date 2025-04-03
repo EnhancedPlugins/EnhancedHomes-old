@@ -2,7 +2,7 @@ name: EnhancedHomes
 description: A modern and feature-rich homes plugin.
 authors: [Noma, rvHoney]
 website: https://enhancedplugins.com
-version: '1.2'
+version: '1.2.1'
 api-version: '1.17'
 main: com.enhancedplugins.enhancedhomes.EnhancedHomes
 permissions:

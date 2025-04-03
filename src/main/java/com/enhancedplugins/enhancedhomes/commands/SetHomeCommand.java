@@ -3,15 +3,18 @@ package com.enhancedplugins.enhancedhomes.commands;
 import com.enhancedplugins.enhancedhomes.EnhancedHomes;
 import com.enhancedplugins.enhancedhomes.managers.HomeManager;
 import com.enhancedplugins.enhancedhomes.models.Home;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -101,16 +104,21 @@ public class SetHomeCommand implements CommandExecutor {
         if (sender.hasPermission("enhancedhomes.sethome.unlimited")) {
             maxHomes = 100;
         } else {
-            for (int i = 1; i <= 100; i++) {
-                if (sender.hasPermission("enhancedhomes.sethome.max." + i)) {
-                    maxHomes = i;
-                    break;
-                }
-            }
+            List<String> sortedPermissions = sender.getEffectivePermissions().stream()
+                    .map(PermissionAttachmentInfo::getPermission)
+                    .filter(perm -> perm.startsWith("enhancedhomes.sethome.max"))
+                    .sorted()
+                    .toList();
+
+            maxHomes = sortedPermissions.stream()
+                    .map(perm -> Integer.parseInt(perm.replace("enhancedhomes.sethome.max.", "")))
+                    .max(Integer::compareTo)
+                    .orElse(maxHomes);
         }
 
         if (homeManager.getHomes(player).size() >= maxHomes) {
             String homeLimitReachedMessage = plugin.getLangMessage("commands.sethome.home-limit-reached");
+            homeLimitReachedMessage = homeLimitReachedMessage.replace("%home%", args[0]);
             homeLimitReachedMessage = homeLimitReachedMessage.replace("%homes%", String.valueOf(homeManager.getHomes(player).size()));
             homeLimitReachedMessage = homeLimitReachedMessage.replace("%current%", String.valueOf(maxHomes));
             homeLimitReachedMessage = homeLimitReachedMessage.replace("%max%", String.valueOf(maxHomes));
